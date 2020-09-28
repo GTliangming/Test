@@ -3,12 +3,12 @@
 # dependencies
 **/node_modules
 # roadhog-api-doc ignore
-/src/utils/request-temp.js
+admin/src/utils/request-temp.js
 _roadhog-api-doc
 
 # production
-/dist
-/.vscode
+admin/dist
+admin/.vscode
 
 # misc
 .DS_Store
