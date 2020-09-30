@@ -4,17 +4,12 @@ const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-// const cookieParser = require('cookie-parser');
-const index = require('./routes/index')
-const users = require('./routes/users')
-// const session = require('express-session');
-
 const Koa_Session = require('koa-session');   // 导入koa-session  
 // 配置
 const session_signed_key = ["lm-cookie"];  // 这个是配合signed属性的签名key
 const session_config = {
-    key: 'koa:sess', /**  cookie的key。 (默认是 koa:sess) */
-    maxAge: { maxAge: 60 * 1000 * 30, httpOnly: true },   /**  session 过期时间，以毫秒ms为单位计算 。*/
+    key: 'lm-cookie', /**  cookie的key。 (默认是 koa:sess) */
+    maxAge: { maxAge: 1000 * 3, httpOnly: true },   /**  session 过期时间，以毫秒ms为单位计算 。*/
     autoCommit: true, /** 自动提交到响应头。(默认是 true) */
     overwrite: true, /** 是否允许重写 。(默认是 true) */
     httpOnly: true, /** 是否设置HttpOnly，如果在Cookie中设置了"HttpOnly"属性，那么通过程序(JS脚本、Applet等)将无法读取到Cookie信息，这样能有效的防止XSS攻击。  (默认 true) */
@@ -22,6 +17,13 @@ const session_config = {
     rolling: true, /** 是否每次响应时刷新Session的有效期。(默认是 false) */
     renew: false, /** 是否在Session快过期时刷新Session的有效期。(默认是 false) */
 };
+
+
+//将路由文件引入
+const index = require('./routes/index');
+const users = require('./routes/users');
+const login = require('./routes/login');
+
 
 // 初始化
 const app = new Koa()
@@ -52,20 +54,9 @@ app.use(views(__dirname + '/views', {
 }))
 
 // 生成cookie
-
 const session = Koa_Session(session_config, app)
 app.keys = session_signed_key;
 app.use(session)
-// app.use(cookieParser('lm-Test-cookie'));
-// app.use(
-// 	session({
-// 		secret: 'lm-Test-cookie',
-// 		name: 'session_id', //# 在浏览器中生成cookie的名称key，默认是connect.sid
-// 		resave: true,
-// 		saveUninitialized: true,
-// 		cookie: { maxAge: 60 * 1000 * 30, httpOnly: true }, //过期时间
-// 	}),
-// );
 
 // logger
 app.use(async (ctx, next) => {
@@ -75,9 +66,11 @@ app.use(async (ctx, next) => {
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
 
-// routes
+
+//初始化所有路由
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
+app.use(login.routes(), login.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

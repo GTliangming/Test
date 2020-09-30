@@ -1,3 +1,18 @@
+
+
+## 目录结构
+
+—— bin                  项目开始文件
+—— common               通用方法
+—— config               项目配置文件夹
+—— controllers          路由请求方法
+—— models               数据库集合模型
+—— public               公共文件
+—— routes               路由定义
+—— views                通用页面
+
+
+
 ## 部分技术
 
 #### consola
