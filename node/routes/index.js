@@ -1,21 +1,18 @@
-
 const router = require('koa-router')()
+router.prefix('/api')
 
-router.get('/', async (ctx, next) => {
 
-  await ctx.render('index', {
-    title: 'Hello Koa 2!'
-  })
-})
 
-router.get('/string', async (ctx, next) => {
-  ctx.body = 'koa2 string'
-})
+const user = require('./user');
 
-router.get('/json', async (ctx, next) => {
-  ctx.body = {
-    title: 'koa2 json 111'
-  }
-})
+router.post('/login',user.login)
+router.post('/loginAdmin',user.loginAdmin)
+router.post('/logout',user.logout)
+router.post('/register',user.register)
+
+router.get('/getUserList',user.getUserList)
+router.post('/deleteOneUser',user.deleteOneUser)
+
+
 
 module.exports = router

@@ -8,9 +8,10 @@
 const crypto = require('crypto');
 const { argv } = require('yargs');
 const { mongoose } = require('../config/mongodb.js');
-const autoIncrement = require('mongoose-auto-increment');
+// const autoIncrement = require('mongoose-auto-increment');
 
 const adminSchema = new mongoose.Schema({
+  id: {type: Number, default: 0, unique: true},
 
   //第三方授权登录的 github 的用户 id
   github_id: { type: String, default: '' },
@@ -61,12 +62,12 @@ const adminSchema = new mongoose.Schema({
   update_time: { type: Date, default: Date.now },
 });
 
-// 自增 ID 插件配置
-adminSchema.plugin(autoIncrement.plugin, {
-  model: 'User',
-  field: 'id',
-  startAt: 1,
-  incrementBy: 1,
-});
+// // 自增 ID 插件配置
+// adminSchema.plugin(autoIncrement.plugin, {
+//   model: 'User',
+//   field: 'id',
+//   startAt: 1,
+//   incrementBy: 1,
+// });
 
 module.exports = mongoose.model('User', adminSchema);

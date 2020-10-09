@@ -21,9 +21,6 @@ const session_config = {
 
 //将路由文件引入
 const index = require('./routes/index');
-const users = require('./routes/users');
-const login = require('./routes/login');
-
 
 // 初始化
 const app = new Koa()
@@ -69,8 +66,6 @@ app.use(async (ctx, next) => {
 
 //初始化所有路由
 app.use(index.routes(), index.allowedMethods())
-app.use(users.routes(), users.allowedMethods())
-app.use(login.routes(), login.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {
