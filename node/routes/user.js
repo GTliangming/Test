@@ -1,3 +1,12 @@
+
+/**
+ * Article models module.
+ * @file 权限和用户数据请求
+ * @module routes/user
+ * @author  lm
+ */
+
+
 const utils = require("../common/utils")
 const User = require("../models/user");
 

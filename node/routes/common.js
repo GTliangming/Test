@@ -1,3 +1,10 @@
+/**
+ * Article models module.
+ * @file 通用请求
+ * @module routes/common
+ * @author  lm
+ */
+
 const utils = require("../common/utils");
 const nodemailer = require("../config/nodemailer");
 
@@ -26,4 +33,8 @@ exports.sendEmail = async (ctx,next) =>{
     await nodemailer(ctx,mail).then(result=>{
         utils.responseClient(ctx,200,'验证码发送成功,请到邮箱查看！')
     })
+}
+
+exports.testPage = async (ctx,next) =>{
+    await ctx.render("index")
 }
