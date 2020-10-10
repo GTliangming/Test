@@ -11,7 +11,7 @@
 —— routes               路由定义
 —— views                通用页面
 
-
+部署地址：`http://netbugs.cn:3000/api/`
 
 ## 部分技术
 

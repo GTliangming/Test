@@ -111,7 +111,7 @@ exports.logout = async (ctx, next) => {
 exports.loginAdmin = async (ctx, next) => {
   let { name, password } = ctx.request.body;
   if (!name) {
-    utils.responseClient(ctx, 400, 2, '用户邮箱不可为空');
+    utils.responseClient(ctx, 400, 2, '用户名不可为空');
     return;
   }
   if (!password) {

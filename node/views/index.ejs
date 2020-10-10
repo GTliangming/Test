@@ -63,7 +63,7 @@
         class ReqBox extends React.Component{
             state={
               val:"",
-              Host:`${document.location.protocol}//${window.location.host}`,
+              Host:`${document.location.protocol}//${window.location.host}/api/`,
               reqdate:"",
               reqtype:"get",
               responData:""
@@ -83,19 +83,19 @@
               if(reqtype==="get"){
                 axios.get(Host+val)
                   .then(result=>{
-                    console.log(222,result.data) 
                     this.setState({
                       responData:JSON.stringify(result.data)
                     }) 
                   })
               }else{
+                let reqDate;
                 try{
-                  let reqDate = JSON.parse(reqdate)
+                  reqDate = JSON.parse(reqdate)
                 }catch(err){
                   alert(err)
                   return
                 }
-                axios.post(Host+val,reqdate)
+                axios.post(Host+val,reqDate)
                 .then(result=>{
                   this.setState({
                     responData:JSON.stringify(result.data)
