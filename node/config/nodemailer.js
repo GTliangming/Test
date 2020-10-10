@@ -4,7 +4,7 @@
 */
 
 const nodemailer = require('nodemailer');
- 
+const fetch = require('node-fetch');
 //创建一个smtp服务器
 const config = {
     host: 'smtp.163.com',
