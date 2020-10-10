@@ -11,15 +11,23 @@ const { mongoose } = require('../config/mongodb.js');
 // const autoIncrement = require('mongoose-auto-increment');
 
 const adminSchema = new mongoose.Schema({
-  id: {type: Number, default: 0, unique: true},
 
+  id: { type:Number, default: new Date() },
   //第三方授权登录的 github 的用户 id
   github_id: { type: String, default: '' },
 
   // 名字
   name: { type: String, required: true, default: '' },
 
-  //用户类型 0：博主，1：其他用户 ，2：github， 3：weixin， 4：qq ( 0，1 是注册的用户； 2，3，4 都是第三方授权登录的用户)
+  //用户类型
+  /*  
+    999：超级管理员
+    99 ：普通管理员
+    0：博主，
+    1：其他用户 ，
+    2：github， 
+    3：weixin， 
+    4：qq ( 0，1 是注册的用户； 2，3，4 都是第三方授权登录的用户) */
   type: { type: Number, default: 1 },
 
   // 手机
