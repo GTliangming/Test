@@ -3,6 +3,7 @@
 # dependencies
 admin/node_modules
 node/node_modules
+blog-react/node_modules
 
 # roadhog-api-doc ignore
 admin/src/utils/request-temp.js
