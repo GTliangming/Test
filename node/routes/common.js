@@ -8,9 +8,9 @@
 const utils = require("../common/utils");
 const nodemailer = require("../config/nodemailer");
 const fetch = require('node-fetch');
-// const fs = require("fs");
+const fs = require("fs");
 
-
+/* 邮箱发送验证码！ */
 exports.sendEmail = async (ctx,next) =>{
     let email=ctx.request.query.email;
     console.log(111,email)
@@ -20,32 +20,25 @@ exports.sendEmail = async (ctx,next) =>{
     }
     let code = utils.createSixNum();
     // let responText = ""
-    fetch("https://v1.jinrishici.com/rensheng.txt", {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json', 
-        }
-      }).then((res)=>{
-
-        console.log(222,res.body.json())
-      })
+    // fetch("https://v1.jinrishici.com/rensheng.json", {
+    //     method: 'GET'
+    //   }).then((res)=>{
+    //     console.log(11111,JSON.stringify(res.body))
+       
+    //   })
     let mail = {
         from : "lmzs124083@163.com",
         subject : "即将拥有八块腹肌のlm向你发送了一个爱心验证码",
         to : email,
-        text :`
-        正见空江明月来，云水苍茫失江路。
-
-        夜深江月弄清辉，水上人歌月下归
-        
-        您的验证码为 ${code}  !!
-        `
+        html:`
+        <H1>验证码</H1><a href="javascript:;">${code}</a>  请在5分钟内完成验证！`
     }
-    // await nodemailer(ctx,mail).then(result=>{
-    //     utils.responseClient(ctx,200,'验证码发送成功,请到邮箱查看！')
-    // })
+    await nodemailer(ctx,mail).then(result=>{
+        utils.responseClient(ctx,200,'验证码发送成功,请到邮箱查看！')
+    })
 }
 
+/* 接口测试页面    (用postman测试更佳) */
 exports.testPage = async (ctx,next) =>{
     await ctx.render("index")
 }
