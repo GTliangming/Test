@@ -1,21 +1,42 @@
+// {
+//   "compilerOptions": {
+//     "experimentalDecorators": true,
+//     "target": "es5",
+//     "lib": ["dom", "es5", "scripthost", "es6", "es2016.array.include"],
+//     "allowJs": true,
+//     "skipLibCheck": true,
+//     "esModuleInterop": true,
+//     "allowSyntheticDefaultImports": true,
+//     "strict": true,
+//     "forceConsistentCasingInFileNames": true,
+//     "module": "esnext",
+//     "moduleResolution": "node",
+//     "resolveJsonModule": true,
+//     "isolatedModules": true,
+//     "noEmit": true,
+//     "jsx": "react",
+//     "types": ["react", "react-dom"],
+//   },
+//   "include": ["*.ts", "./src/**/*.ts", "./src/**/*.tsx"],
+// 	"exclude": ["node_modules", "./build"]
+// }
 {
-  "compilerOptions": {
-    "target": "es5",
-    "lib": ["dom", "es5", "scripthost", "es6", "es2016.array.include"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react",
-    "types": ["react", "react-dom"],
-  },
-  "include": ["*.ts", "./src/**/*.ts", "./src/**/*.tsx"],
-	"exclude": ["node_modules", "./build"]
+	"compilerOptions": {
+		"outDir": "./dist",
+		"sourceMap": true,
+		"noImplicitAny": false,
+		"noImplicitReturns": true,
+		"noUnusedLocals": true,
+		"noUnusedParameters": true,
+		"module": "esnext",
+		"target": "ES5",
+		"jsx": "react",
+		"experimentalDecorators": true,
+		"types": ["react", "react-dom"],
+		"baseUrl": "src",
+		"lib": ["dom", "es5", "scripthost", "es6", "es2016.array.include"],
+		"moduleResolution": "node"
+	},
+	"include": ["*.ts", "./src/**/*.ts", "./src/**/*.tsx", "./type-declarations/**/*.d.ts"],
+	"exclude": ["node_modules", "./dist"]
 }

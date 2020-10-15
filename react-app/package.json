@@ -31,7 +31,8 @@
     "styled-components": "^2.4.0",
     "tslint": "^5.3.2",
     "tslint-component-state-and-props-no-any": "^1.0.1",
-    "typescript": "~3.7.2"
+    "typescript": "~3.7.2",
+    "ts-loader": "^4.2.0"
   },
   "scripts": {
     "start": "react-app-rewired start",

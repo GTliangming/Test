@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 import logo from './assets/image/logo.svg';
 import './assets/css/App.css';
 function App() {

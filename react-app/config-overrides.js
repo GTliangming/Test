@@ -4,7 +4,8 @@ const {
     fixBabelImports,
     addLessLoader,
     addBabelPresets,
-    addWebpackAlias
+    addWebpackAlias,
+    addTslintLoader
 } = require("customize-cra")
 
 function resolve (dir) {
@@ -20,6 +21,7 @@ module.exports= override(
         libraryDirectory:"es",
         // style:"css"
     }),
+    
     // 装饰器 
     // addDecoratorsLegacy(),
 
@@ -51,6 +53,6 @@ module.exports= override(
       addWebpackAlias({
           ["@Component"]:path.resolve(__dirname,"./src/components"),
           ["@Views"]:path.resolve(__dirname,"./src/views"),
-      })
-
+      }),
+      addTslintLoader()    
 )
