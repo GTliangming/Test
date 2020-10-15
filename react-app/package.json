@@ -1,0 +1,57 @@
+{
+  "name": "react-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/jest": "^24.0.0",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.0",
+    "@types/react-dom": "^16.9.0",
+    "@types/react-router": "^5.1.8",
+    "antd": "^3.15.0",
+    "axios": "^0.18.1",
+    "babel-plugin-import": "^1.13.1",
+    "connected-react-router": "^6.3.2",
+    "customize-cra": "^1.0.0",
+    "less": "^3.12.2",
+    "less-loader": "^7.0.2",
+    "mobx": "^6.0.1",
+    "mobx-react": "^7.0.0",
+    "mobx-react-devtools": "^4.2.13",
+    "react": "^16.14.0",
+    "react-app-rewired": "2.0.2-next.0",
+    "react-dom": "^16.14.0",
+    "react-router": "3.2.0",
+    "react-scripts": "3.4.3",
+    "scss-loader": "^0.0.1",
+    "styled-components": "^2.4.0",
+    "tslint": "^5.3.2",
+    "tslint-component-state-and-props-no-any": "^1.0.1",
+    "typescript": "~3.7.2"
+  },
+  "scripts": {
+    "start": "react-app-rewired start",
+    "build": "react-app-rewired build",
+    "test": "react-app-rewired test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
