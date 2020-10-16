@@ -1,0 +1,16 @@
+.navBox{
+    align-items: center;
+    position:absolute;
+    z-index:90;
+    top: 0;
+    width: 100vw;
+    height: 64px;
+    display:flex;
+    background-color: pink;
+    border-bottom: 1px solid #eee;
+    text-align:center;
+    &>p{
+        width: 100%;
+        text-align: center;
+    }
+}

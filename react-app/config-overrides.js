@@ -5,7 +5,7 @@ const {
     addLessLoader,
     addBabelPresets,
     addWebpackAlias,
-    addTslintLoader
+    addTslintLoader,
 } = require("customize-cra")
 
 function resolve (dir) {
@@ -24,7 +24,7 @@ module.exports= override(
     
     // 装饰器 
     // addDecoratorsLegacy(),
-
+    
     // 预设支持mobx 装饰器语法
     ...addBabelPresets(["mobx"]),
 

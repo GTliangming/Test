@@ -1,12 +1,12 @@
 import React from 'react';
 import Loadable from 'react-loadable';
 
-const loadingComponent = ({ error, pastDelay,timedOut }) => {
+const loadingComponent = ({ error, pastDelay, timedOut }) => {
   if (error) {
     return <div>Error!</div>;
-  }else if(timedOut){
+  } else if (timedOut) {
     return <div>Taking a long time...</div>;
-  }else if (pastDelay) {
+  } else if (pastDelay) {
     return <div>Loading...</div>;
     // return <div />; 
   } else {
@@ -20,88 +20,18 @@ let config = [
     path: '/',
     exact: true,
     component: Loadable({
-      loader: () => import('../components/home/index.js'),
+      loader: () => import('../components/home/index'),
       loading: loadingComponent,
       delay: 300,
-      timeout: 10000, 
+      timeout: 10000,
     }),
   },
   {
-    name: 'articles',
-    path: '/articles',
+    name: 'sideBar',
+    path: '/sideBar',
     exact: true,
     component: Loadable({
-      loader: () => import('../components/articles/articles.js'),
-      loading: loadingComponent,
-      delay: 300,
-    }),
-  },
-  {
-    name: 'hot',
-    path: '/hot',
-    exact: true,
-    component: Loadable({
-      loader: () => import('../components/articles/articles.js'),
-      loading: loadingComponent,
-      delay: 300,
-    }),
-  },
-  {
-    name: 'archive',
-    path: '/archive',
-    exact: true,
-    component: Loadable({
-      loader: () => import('../components/archive/archive.js'),
-      loading: loadingComponent,
-      delay: 300,
-    }),
-  },
-  {
-    name: 'timeLine',
-    path: '/timeLine',
-    exact: true,
-    component: Loadable({
-      loader: () => import('../components/timeLine/timeLine.js'),
-      loading: loadingComponent,
-      delay: 300,
-    }),
-  },
-  {
-    name: 'message',
-    path: '/message',
-    exact: true,
-    component: Loadable({
-      loader: () => import('../components/message/message.js'),
-      loading: loadingComponent,
-      delay: 300,
-    }),
-  },
-  {
-    name: 'about',
-    path: '/about',
-    exact: true,
-    component: Loadable({
-      loader: () => import('../components/article/article.js'),
-      loading: loadingComponent,
-      delay: 300,
-    }),
-  },
-  {
-    name: 'articleDetail',
-    path: '/articleDetail',
-    exact: true,
-    component: Loadable({
-      loader: () => import('../components/article/article.js'),
-      loading: loadingComponent,
-      delay: 300,
-    }),
-  },
-  {
-    name: 'project',
-    path: '/project',
-    exact: true,
-    component: Loadable({
-      loader: () => import('../components/project/project.js'),
+      loader: () => import('../components/sideBar/index'),
       loading: loadingComponent,
       delay: 300,
     }),
