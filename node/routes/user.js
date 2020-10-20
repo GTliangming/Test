@@ -9,10 +9,52 @@
 
 const utils = require("../common/utils")
 const User = require("../models/user");
+const CONFIG = require('../app.config');
+const fetch = require('node-fetch');
 
-
+// Client ID
+// 0bd27ff087cc7103c1b9
+// Client Secret
+// dfa9e7b807408190b570a7da52092f96bdeecfe6
 
 /* ------------------  前端用户操作 ------------------   */
+
+/* github授权登录 */
+exports.authorizeLogin = async (ctx , next) =>{
+  let { code} = ctx.request.query;
+  console.log("code",code)
+  if (!code) {
+    utils.responseClient(ctx, 400, 'code缺失');
+    return;
+  }
+  let path = CONFIG.GITHUB.access_token_url;
+  const params = {
+    client_id: CONFIG.GITHUB.client_id,
+    client_secret: CONFIG.GITHUB.client_secret,
+    code: code,
+  };
+  console.log(222,path,params)
+  const tokenResponse = await fetch(path,{
+    method:"POST",
+    headers:{
+      'Content-Type': 'application/json', 
+    },
+    body: JSON.stringify(params),
+  })
+  console.log(3333,tokenResponse)
+
+  
+  // fetch(path, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json', 
+  //   },
+  //   body: JSON.stringify(params),
+  // })
+  // .then((res1)=>{
+  //   console.log(1111,res1)
+  // })
+}
 
 
 /* 前端登录 */

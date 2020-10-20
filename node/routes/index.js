@@ -29,6 +29,7 @@ router.post('/register',user.register)
 router.get('/getUserList',user.getUserList)
 router.get('/getUserInfo',user.getUserInfo)
 router.post('/deleteOneUser',user.deleteOneUser)
+router.get('/authorizeLogin',user.authorizeLogin)
 
 
 /*  文章·········· */
