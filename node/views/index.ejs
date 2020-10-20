@@ -154,7 +154,7 @@
                     <antd.Button
                     type="primary"
                     onClick={()=>{
-                      window.location.href="https://github.com/login/oauth/authorize?client_id=0bd27ff087cc7103c1b9&redirect_uri=http://localhost:3002/api/authorizeLogin"
+                      window.location.href=`https://github.com/login/oauth/authorize?client_id=0bd27ff087cc7103c1b9&redirect_uri=${document.location.protocol}//${window.location.host}/api/authorizeLogin`
                     }}
                     >GitHub登录</antd.Button>
                 </div>
