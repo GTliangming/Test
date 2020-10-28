@@ -19,12 +19,20 @@ const fetch = require('node-fetch');
 
 /* ------------------  前端用户操作 ------------------   */
 
+/* gihub重定向 */
+
+exports.githubLogin = async (ctx, next) => {
+  let path = CONFIG.GITHUB.oauth_uri;
+  path += '?client_id=' + CONFIG.GITHUB.client_id;
+  ctx.redirect(path);
+}
+
+
 /* github授权登录 */
-exports.authorizeLogin = async (ctx , next) =>{
-  let { code} = ctx.request.query;
-  console.log("code",code)
+exports.authorizeLogin = async (ctx, next) => {
+  let { code } = ctx.request.query;
   if (!code) {
-    utils.responseClient(ctx, 400, 'code缺失');
+    utils.responseClient(ctx, 400, 'code 缺失');
     return;
   }
   let path = CONFIG.GITHUB.access_token_url;
@@ -33,33 +41,77 @@ exports.authorizeLogin = async (ctx , next) =>{
     client_secret: CONFIG.GITHUB.client_secret,
     code: code,
   };
-  console.log(222,path,params)
-  const tokenResponse = await fetch(path,{
-    method:"POST",
-    headers:{
-      'Content-Type': 'application/json', 
+  await fetch(path, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(params),
   })
-  console.log(3333,tokenResponse)
+    .then(res1 => {
+      return res1.text();
+    })
+    .then(body => {
+      const args = body.split('&');
+      let arg = args[0].split('=');
+      const access_token = arg[1];
+      return access_token;
+    })
+    .then(async token => {
+      const url = "https://api.github.com/user";
+      await fetch(url, {
+        headers: {
+          accept: 'application/json',
+          Authorization: `token ${token}`
+        }
+      }).then(res2 => {
+        return res2.json();
+      })
+        .then( async response => {
+          if (response.id) {
+            await User.findOne({ github_id: response.id })
+              .then(userInfo => {
+                // console.log('userInfo :', userInfo);
+                if (userInfo) {
+                  //登录成功后设置session
+                  ctx.session.userInfo = userInfo;
+                  utils.responseClient(ctx, 200, '授权登录成功', userInfo);
+                } else {
+                  let obj = {
+                    github_id: response.id,
+                    email: response.email,
+                    password: response.login,
+                    type: 2,
+                    avatar: response.avatar_url,
+                    name: response.login,
+                    location: response.location,
+                  };
+                  //保存到数据库
+                  let user = new User(obj);
+                  user.save().then(data => {
+                    ctx.session.userInfo = userInfo;
+                    utils.responseClient(res, 200, '授权登录成功', data);
+                  });
+                }
+              })
+              .catch(err => {
+                utils.responseClient(ctx, 400, "授权登录失败", err)
+                return;
+              });
 
-  
-  // fetch(path, {
-  //   method: 'POST',
-  //   headers: {
-  //     'Content-Type': 'application/json', 
-  //   },
-  //   body: JSON.stringify(params),
-  // })
-  // .then((res1)=>{
-  //   console.log(1111,res1)
-  // })
+          } else {
+            utils.responseClient(ctx, 400, '授权登录失败');
+          }
+        }).catch(e => {
+          console.log('e:', e);
+        });
+    })
 }
 
 
 /* 前端登录 */
 exports.login = async (ctx, next) => {
-  let { email, password ,name} = ctx.request.body;
+  let { email, password, name } = ctx.request.body;
   if (!email && !name) {
     utils.responseClient(ctx, 400, '用户名或邮箱不可为空');
     return;
@@ -69,15 +121,16 @@ exports.login = async (ctx, next) => {
     return;
   }
   await User.find(
-    { '$or': [
-      { email: email ,password: utils.md5(password + utils.MD5_SUFFIX)},
-      { name: name ,password: utils.md5(password + utils.MD5_SUFFIX)}]
+    {
+      '$or': [
+        { email: email, password: utils.md5(password + utils.MD5_SUFFIX) },
+        { name: name, password: utils.md5(password + utils.MD5_SUFFIX) }]
     })
-    .then(userInfo=> {
+    .then(userInfo => {
       if (userInfo) {
         //登录成功后设置session
         ctx.session.userInfo = userInfo;
-        utils.responseClient(ctx, 200, '登录成功',userInfo);
+        utils.responseClient(ctx, 200, '登录成功', userInfo);
       } else {
         utils.responseClient(ctx, 400, '登录失败请重试');
       }
@@ -120,20 +173,20 @@ exports.register = async (ctx, next) => {
   if (datas.length > 0) {
     utils.responseClient(ctx, 400, "用户已存在！")
   } else {
-      //保存到数据库
-      let user = new User({
-        email,
-        name,
-        password: utils.md5(password + utils.MD5_SUFFIX),
-        phone,
-        type,
-        introduce,
-      });
-      await user.save().then(data => {
-        //注册成功后设置session
-        ctx.session.userInfo = data;
-        utils.responseClient(ctx, 200, '注册成功', data);
-      });
+    //保存到数据库
+    let user = new User({
+      email,
+      name,
+      password: utils.md5(password + utils.MD5_SUFFIX),
+      phone,
+      type,
+      introduce,
+    });
+    await user.save().then(data => {
+      //注册成功后设置session
+      ctx.session.userInfo = data;
+      utils.responseClient(ctx, 200, '注册成功', data);
+    });
   }
 }
 /* 前端退出登录 */
@@ -159,20 +212,20 @@ exports.loginAdmin = async (ctx, next) => {
   if (!password) {
     utils.responseClient(ctx, 400, 2, '密码不可为空');
     return;
-  } 
+  }
   let userType = 0;
-  await User.findOne({name:name,password: utils.md5(password + utils.MD5_SUFFIX),})
+  await User.findOne({ name: name, password: utils.md5(password + utils.MD5_SUFFIX), })
     .then(data => {
-      if(data){
+      if (data) {
         userType = data.type;
-        if(userType === 999 || userType === 99){
+        if (userType === 999 || userType === 99) {
           //登录成功后设置session
           ctx.session.userInfo = data;
-          utils.responseClient(ctx, 200, '后台管理平台登录成功',data);
-        }else{
+          utils.responseClient(ctx, 200, '后台管理平台登录成功', data);
+        } else {
           utils.responseClient(ctx, 400, '您没有登录权限！');
         }
-      }else{
+      } else {
         utils.responseClient(ctx, 400, '该用户不存在');
       }
     })
@@ -199,7 +252,7 @@ exports.getUserList = async (ctx, next) => {
     list: [],
   };
   await User.countDocuments({}, (err, count) => {
-    responseData.count = count ;
+    responseData.count = count;
     next();
   });
   if (responseData.count < 1) {
@@ -245,12 +298,12 @@ exports.deleteOneUser = async (ctx, next) => {
   });
 }
 /* 获取当前用户信息 */
-exports.getUserInfo = async (ctx,next) =>{
+exports.getUserInfo = async (ctx, next) => {
   let info = ctx.session.userInfo;
-  console.log(11111,info)
-  if(info){
-    utils.responseClient(ctx, 200, '获取成功',info);
-  }else{
+  console.log(11111, info)
+  if (info) {
+    utils.responseClient(ctx, 200, '获取成功', info);
+  } else {
     utils.responseClient(ctx, 400, '当前还未登录');
   }
 }

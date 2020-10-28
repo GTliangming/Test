@@ -30,7 +30,7 @@ router.get('/getUserList',user.getUserList)
 router.get('/getUserInfo',user.getUserInfo)
 router.post('/deleteOneUser',user.deleteOneUser)
 router.get('/authorizeLogin',user.authorizeLogin)
-
+router.get('/githubLogin',user.githubLogin)
 
 /*  文章·········· */
 router.get('/getArticleList',article.getArticleList)

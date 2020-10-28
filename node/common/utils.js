@@ -8,7 +8,6 @@ exports.md5 = (pwd) => {
 }
 // 响应客户端
 exports.responseClient = async (ctx, code, message, data) => {
-	console.log(2222)
 	if (data) {
 		return ctx.body = {
 			code,
