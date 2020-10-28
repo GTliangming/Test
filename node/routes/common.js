@@ -7,6 +7,7 @@
 
 const utils = require("../common/utils");
 const nodemailer = require("../config/nodemailer");
+const User = require("../models/user");
 const fetch = require('node-fetch');
 const fs = require("fs");
 
@@ -19,13 +20,6 @@ exports.sendEmail = async (ctx,next) =>{
         return;
     }
     let code = utils.createSixNum();
-    // let responText = ""
-    // fetch("https://v1.jinrishici.com/rensheng.json", {
-    //     method: 'GET'
-    //   }).then((res)=>{
-    //     console.log(11111,JSON.stringify(res.body))
-       
-    //   })
     let mail = {
         from : "lmzs124083@163.com",
         subject : "即将拥有八块腹肌のlm向你发送了一个爱心验证码",
@@ -33,8 +27,11 @@ exports.sendEmail = async (ctx,next) =>{
         html:`
         <H1>验证码</H1><a href="javascript:;">${code}</a>  请在5分钟内完成验证！`
     }
-    await nodemailer(ctx,mail).then(result=>{
+    await nodemailer(ctx,mail).then( async result=>{
+        ctx.session.checking_code = code;
         utils.responseClient(ctx,200,'验证码发送成功,请到邮箱查看！')
+    }).catch(err=>{
+        utils.responseClient(ctx,400,'验证码发送失败,请重新再试！')
     })
 }
 

@@ -12,7 +12,7 @@ const { mongoose } = require('../config/mongodb.js');
 
 const adminSchema = new mongoose.Schema({
 
-  id: { type:Number, default: new Date() },
+  id: { type: Number, default: new Date() },
   //第三方授权登录的 github 的用户 id
   github_id: { type: String, default: '' },
 
@@ -32,7 +32,7 @@ const adminSchema = new mongoose.Schema({
     999：超级管理员 最高权限
     99 ：普通管理员 普通权限
   */
-  adminType:{ type:Number, default:0 },
+  adminType: { type: Number, default: 0 },
 
   // 手机
   phone: { type: String, default: '' },
@@ -72,6 +72,7 @@ const adminSchema = new mongoose.Schema({
 
   // 最后修改日期
   update_time: { type: Date, default: Date.now },
+
 });
 
 // // 自增 ID 插件配置

@@ -40,3 +40,6 @@ exports.createSixNum = () =>{
 	}
 	return codeNum;
 }
+exports.CheckUserInfo = (val:any) =>{
+	
+}

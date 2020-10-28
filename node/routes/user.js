@@ -67,7 +67,7 @@ exports.authorizeLogin = async (ctx, next) => {
       }).then(res2 => {
         return res2.json();
       })
-        .then( async response => {
+        .then(async response => {
           if (response.id) {
             await User.findOne({ github_id: response.id })
               .then(userInfo => {
@@ -111,7 +111,8 @@ exports.authorizeLogin = async (ctx, next) => {
 
 /* 前端登录 */
 exports.login = async (ctx, next) => {
-  let { email, password, name } = ctx.request.body;
+  let { email, password, name, checking_code } = ctx.request.body;
+
   if (!email && !name) {
     utils.responseClient(ctx, 400, '用户名或邮箱不可为空');
     return;
@@ -119,6 +120,10 @@ exports.login = async (ctx, next) => {
   if (!password) {
     utils.responseClient(ctx, 400, '密码不可为空');
     return;
+  }
+  const code = ctx.session.checking_code;
+  if (!checking_code || checking_code !== code) {
+    utils.responseClient(ctx, 400, '验证码为空或输入有误！');
   }
   await User.find(
     {
@@ -141,7 +146,7 @@ exports.login = async (ctx, next) => {
 }
 /* 前端注册 */
 exports.register = async (ctx, next) => {
-  let { name, password, phone, email, introduce, type } = ctx.request.body;
+  let { name, password, phone, email, introduce, type, checking_code } = ctx.request.body;
   if (!email) {
     utils.responseClient(ctx, 400, '用户邮箱不可为空');
     return;
@@ -160,6 +165,10 @@ exports.register = async (ctx, next) => {
   if (!password) {
     utils.responseClient(ctx, 400, '密码不可为空');
     return;
+  }
+  const code = ctx.session.checking_code;
+  if (!checking_code || checking_code !== code) {
+    utils.responseClient(ctx, 400, '验证码为空或输入有误！');
   }
   //验证用户是否已经在数据库中
   let datas = [];
@@ -300,10 +309,13 @@ exports.deleteOneUser = async (ctx, next) => {
 /* 获取当前用户信息 */
 exports.getUserInfo = async (ctx, next) => {
   let info = ctx.session.userInfo;
-  console.log(11111, info)
   if (info) {
     utils.responseClient(ctx, 200, '获取成功', info);
   } else {
     utils.responseClient(ctx, 400, '当前还未登录');
   }
+}
+/* 用户修改密码 */
+exports.updatePassword = async (ctx, next) => {
+  let { name, email,checking_code } = ctx.request.body;
 }
