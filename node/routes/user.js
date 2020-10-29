@@ -313,17 +313,22 @@ exports.updatePassword = async (ctx, next) => {
   if (!checking_code || checking_code !== code) {
     utils.responseClient(ctx, 400, '验证码为空或输入有误！');
   }
-  await User.findOne({ name, email }).then( async result=>{
-    if(result){
+  await User.findOne({ name, email }).then(async result => {
+    if (result) {
       await User.updateOne({ name, email }, { password }).then(result => {
         utils.responseClient(ctx, 200, '修改成功', result);
       })
-    }else{
+    } else {
       utils.responseClient(ctx, 400, '当前用户不存在');
     }
   }).catch(err => {
     utils.responseClient(ctx);
     return;
   });
- 
+
+}
+
+/* 管理员修改用户权限 */
+exports.updateUserAuthority = async (ctx, next) => {
+
 }
