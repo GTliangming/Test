@@ -40,6 +40,20 @@ exports.createSixNum = () =>{
 	}
 	return codeNum;
 }
-exports.CheckUserInfo = (val:any) =>{
+exports.CheckUserInfo = async (result) =>{
+	console.log(1111,result.request)
+	const {name,password,email} = result.request.body;
 	
+	if (!password) {
+		this.responseClient(result, 400, '密码不可为空');
+		return;
+	}
+	if (!name) {
+		this.responseClient(result, 400, '用户名不可为空');
+		return;
+	  }
+	if (!email) {
+		this.responseClient(result, 400, '邮箱不可为空');
+		return;
+	}
 }
