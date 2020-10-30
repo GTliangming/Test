@@ -41,7 +41,6 @@ exports.createSixNum = () =>{
 	return codeNum;
 }
 exports.CheckUserInfo = async (result) =>{
-	console.log(1111,result.request)
 	const {name,password,email} = result.request.body;
 	
 	if (!password) {

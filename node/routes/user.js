@@ -313,7 +313,7 @@ exports.updatePassword = async (ctx, next) => {
   if (!checking_code || checking_code !== code) {
     utils.responseClient(ctx, 400, '验证码为空或输入有误！');
   }
-  await User.findOne({ name, email }).then(async result => {
+  await User.findOne({ name }).then(async result => {
     if (result) {
       await User.updateOne({ name, email }, { password }).then(result => {
         utils.responseClient(ctx, 200, '修改成功', result);
@@ -330,5 +330,22 @@ exports.updatePassword = async (ctx, next) => {
 
 /* 管理员修改用户权限 */
 exports.updateUserAuthority = async (ctx, next) => {
-
+  const { id, targetId ,name} = ctx.request.body;
+  await User.findOne({ name ,id}).then(async result => {
+    const type = result.type;
+    if (type !== 999 || type !== 99) {
+      utils.responseClient(ctx, 400, '您没有当前操作的权限！');
+    } else if (type === 99) {
+      await User.updateOne({ _id: targetId }, { type: 9 }).then(result => {
+        utils.responseClient(ctx, 200, '权限成功修改为管理员', result);
+      })
+    } else if (type === 999) {
+      await User.updateOne({ _id: targetId }, { type: 99 }).then(result => {
+        utils.responseClient(ctx, 200, '权限成功修改为普通管理员', result);
+      })
+    }
+  }).catch(err => {
+    utils.responseClient(ctx);
+    return;
+  });
 }

@@ -32,6 +32,7 @@ router.post('/deleteOneUser',user.deleteOneUser)
 router.get('/authorizeLogin',user.authorizeLogin)
 router.get('/githubLogin',user.githubLogin)
 router.post('/updatePassword',user.updatePassword)
+router.post('/updateUserAuthority',user.updateUserAuthority)
 
 
 /*  文章·········· */

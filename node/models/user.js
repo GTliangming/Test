@@ -31,6 +31,7 @@ const adminSchema = new mongoose.Schema({
   /* 
     999：超级管理员 最高权限
     99 ：普通管理员 普通权限
+    9: 普通后台用户，仅限查看
   */
   adminType: { type: Number, default: 0 },
 
