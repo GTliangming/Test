@@ -1,9 +1,9 @@
-import React from 'react';
-import { Route, Switch, Router } from 'react-router-dom';
-import routers from './router/index.js';
-import ContentBoxs from './views/ContentBoxs';
+import React from "react";
+import { Route, Router, Switch } from "react-router-dom";
+import routers from "./router/index.js";
+import ContentBoxs from "./views/ContentBoxs";
 
-import { createBrowserHistory } from 'history';
+import { createBrowserHistory } from "history";
 export const history = createBrowserHistory();
 export default class App extends React.Component<{}, {}> {
 
@@ -24,6 +24,6 @@ export default class App extends React.Component<{}, {}> {
                 </Switch>
             </Router>
         );
-    };
-};
+    }
+}
 

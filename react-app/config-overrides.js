@@ -50,9 +50,9 @@ module.exports= override(
       }),
 
     // 默认路径设置
-      addWebpackAlias({
-          ["@Component"]:path.resolve(__dirname,"./src/components"),
-          ["@Views"]:path.resolve(__dirname,"./src/views"),
-      }),
+    //   addWebpackAlias({
+    //       ["@Component"]:path.join(__dirname,"./src/components"),
+    //       ["@Views"]:path.join(__dirname,"./src/views"),
+    //   }),
       addTslintLoader()    
 )

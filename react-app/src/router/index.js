@@ -36,6 +36,16 @@ let config = [
       delay: 300,
     }),
   },
+  {
+    name: 'login',
+    path: '/login',
+    exact: true,
+    component: Loadable({
+      loader: () => import('../components/login/index'),
+      loading: loadingComponent,
+      delay: 300,
+    }),
+  },
 ];
 
 export default config;
