@@ -33,26 +33,16 @@ exports.timestampToTime = (timestamp) => {
 	return Y + M + D + h + m + s;
 }
 // 生成六位随机验证码
-exports.createSixNum = () =>{
+exports.createSixNum = () => {
 	let codeNum = "";
-	for(var i=0;i<6 ;i++){
-		codeNum += Math.floor(Math.random()*10);
+	for (var i = 0; i < 6; i++) {
+		codeNum += Math.floor(Math.random() * 10);
 	}
 	return codeNum;
 }
-exports.CheckUserInfo = async (result) =>{
-	const {name,password,email} = result.request.body;
-	
-	if (!password) {
-		this.responseClient(result, 400, '密码不可为空');
-		return;
-	}
-	if (!name) {
-		this.responseClient(result, 400, '用户名不可为空');
-		return;
-	  }
-	if (!email) {
-		this.responseClient(result, 400, '邮箱不可为空');
-		return;
-	}
+exports.CheckUserInfo = (name, email, password) => {
+	// let ErrText = ""
+	// switch () {
+
+	// }
 }

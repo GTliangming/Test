@@ -20,6 +20,7 @@ const tags = require('./tag');
 /*  通用 ············· */
 router.get('/sendEmail',common.sendEmail)
 router.get('/testPage',common.testPage)
+router.get('/loginGithub',common.testGithub)
 
 /*  用户·········· */
 router.post('/login',user.login)
@@ -32,7 +33,7 @@ router.post('/deleteOneUser',user.deleteOneUser)
 router.get('/authorizeLogin',user.authorizeLogin)
 router.get('/githubLogin',user.githubLogin)
 router.post('/updatePassword',user.updatePassword)
-router.post('/updateUserAuthority',user.updateUserAuthority)
+// router.post('/updateUserAuthority',user.updateUserAuthority)
 
 
 /*  文章·········· */
