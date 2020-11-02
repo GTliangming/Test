@@ -1,10 +1,12 @@
+import { createBrowserHistory } from "history";
 import React from "react";
 import { Route, Router, Switch } from "react-router-dom";
 import routers from "./router/index.js";
 import ContentBoxs from "./views/ContentBoxs";
-
-import { createBrowserHistory } from "history";
 export const history = createBrowserHistory();
+
+
+
 export default class App extends React.Component<{}, {}> {
 
     render() {

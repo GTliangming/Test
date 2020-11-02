@@ -43,7 +43,7 @@
             "check-whitespace"
         ],
         "semicolon": [
-            true,
+            false,
             "always",
             "strict-bound-class-methods"
         ],

@@ -4,8 +4,8 @@ const {
     fixBabelImports,
     addLessLoader,
     addBabelPresets,
-    addWebpackAlias,
     addTslintLoader,
+    addDecoratorsLegacy
 } = require("customize-cra")
 
 function resolve (dir) {
@@ -19,11 +19,11 @@ module.exports= override(
     fixBabelImports("import",{
         libraryName :"antd",
         libraryDirectory:"es",
-        // style:"css"
+        style:"css",
     }),
     
     // 装饰器 
-    // addDecoratorsLegacy(),
+    addDecoratorsLegacy(),
     
     // 预设支持mobx 装饰器语法
     ...addBabelPresets(["mobx"]),
