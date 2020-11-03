@@ -2,6 +2,7 @@ import React from 'react';
 import Loadable from 'react-loadable';
 
 const loadingComponent = ({ error, pastDelay, timedOut }) => {
+  console.log(1111,error)
   if (error) {
     return <div>Error!</div>;
   } else if (timedOut) {

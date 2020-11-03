@@ -14,7 +14,6 @@ const fs = require("fs");
 /* 邮箱发送验证码！ */
 exports.sendEmail = async (ctx, next) => {
     let email = ctx.request.query.email;
-    console.log(111, email)
     if (!email) {
         utils.responseClient(ctx, 400, '邮箱不可为空')
         return;
@@ -27,11 +26,11 @@ exports.sendEmail = async (ctx, next) => {
         html: `
         <H1>验证码</H1><a href="javascript:;">${code}</a>  请在5分钟内完成验证！`
     }
-    await nodemailer(ctx, mail).then(async result => {
+    await nodemailer.sendMail(mail).then(result => {
         ctx.session.checking_code = code;
         utils.responseClient(ctx, 200, '验证码发送成功,请到邮箱查看！')
     }).catch(err => {
-        utils.responseClient(ctx, 400, '验证码发送失败,请重新再试！')
+        utils.responseClient(ctx, 400, '验证码发送失败,请重试！')
     })
 }
 

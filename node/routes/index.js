@@ -16,7 +16,6 @@ const common = require('./common');
 const article = require('./article');
 const tags = require('./tag');
 
-
 /*  通用 ············· */
 router.get('/sendEmail',common.sendEmail)
 router.get('/testPage',common.testPage)

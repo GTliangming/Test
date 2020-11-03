@@ -319,5 +319,11 @@ exports.getUserInfo = async (ctx, next) => {
 }
 /* 用户修改密码 */
 exports.updatePassword = async (ctx, next) => {
-  // let { name, email, checking_code } = ctx.request.body;
+  // let { name, email, checking_code, newPassword } = ctx.request.body;
+  // // 前端判非空
+  // const code = ctx.session.checking_code;
+  // if (!checking_code || checking_code !== code) {
+  //   utils.responseClient(ctx, 400, '验证码为空或输入有误！');
+  // }
+
 }

@@ -4,9 +4,7 @@ import App from "./app";
 import "./assets/css/index.scss";
 import * as serviceWorker from "./serviceWorker";
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <App />,
   document.getElementById("root"),
 );
 serviceWorker.unregister();

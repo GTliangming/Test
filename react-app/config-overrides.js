@@ -5,33 +5,34 @@ const {
     addLessLoader,
     addBabelPresets,
     addTslintLoader,
-    addDecoratorsLegacy
+    addDecoratorsLegacy,
+    addWebpackExternals
 } = require("customize-cra")
 
-function resolve (dir) {
+function resolve(dir) {
     return path.join(__dirname, '.', dir)
 }
 process.env.GENERATE_SOURCEMAP = "false";
 
-module.exports= override(
+module.exports = override(
 
     // 处理antd样式问题
-    fixBabelImports("import",{
-        libraryName :"antd",
-        libraryDirectory:"es",
-        style:"css",
+    fixBabelImports("import", {
+        libraryName: "antd",
+        libraryDirectory: "es",
+        style: "css",
     }),
-    
+
     // 装饰器 
-    addDecoratorsLegacy(),
-    
+    // addDecoratorsLegacy(),
+
     // 预设支持mobx 装饰器语法
     ...addBabelPresets(["mobx"]),
 
     addLessLoader({
-        lessOptions:{
+        lessOptions: {
             javascriptEnabled: true,
-            modifyVars: { 
+            modifyVars: {
                 '@primary-color': '#e2aa11',                        // 全局主色
                 '@link-color': '#e2aa11',                            // 链接色
                 '@success-color': '#52c41a',                        // 成功色
@@ -45,14 +46,15 @@ module.exports= override(
                 '@border-radius-base': '4px',                        // 组件/浮层圆角
                 '@border-color-base': '#d9d9d9',                     // 边框色
                 '@box-shadow-base': '0 2px 8px rgba(0, 0, 0, .15)',  // 浮层阴影
-             },
+            },
         }
-      }),
+    }),
 
     // 默认路径设置
     //   addWebpackAlias({
     //       ["@Component"]:path.join(__dirname,"./src/components"),
     //       ["@Views"]:path.join(__dirname,"./src/views"),
     //   }),
-      addTslintLoader()    
+    addTslintLoader(),
+    addWebpackExternals([".ts", "tsx"])
 )

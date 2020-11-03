@@ -1,9 +1,7 @@
-import { createBrowserHistory } from "history";
 import React from "react";
-import { Route, Router, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import routers from "./router/index.js";
 import ContentBoxs from "./views/ContentBoxs";
-export const history = createBrowserHistory();
 
 
 
@@ -11,7 +9,7 @@ export default class App extends React.Component<{}, {}> {
 
     render() {
         return (
-            <Router history={history}>
+            <Router>
                 <Switch>
                     <ContentBoxs>
                         {routers.map((r, key) => (
