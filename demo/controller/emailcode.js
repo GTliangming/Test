@@ -8,6 +8,7 @@
 
 const utils = require("../common/utils");
 const nodemailer = require('nodemailer');
+const User = require("../models/user");
 
 //创建一个smtp服务器
 const config = {
@@ -29,6 +30,7 @@ const sendEmail = async (ctx, next) => {
         utils.responseClient(ctx, 400, '邮箱不可为空')
         return;
     }
+    let resultType = true;
     let code = utils.createSixNum();
     let mail = {
         from: "lmzs124083@163.com",
@@ -37,21 +39,51 @@ const sendEmail = async (ctx, next) => {
         html: `
         <H1>验证码</H1><a href="javascript:;">${code}</a>  请在5分钟内完成验证！`
     }
-    let resultType = true;
-    //发送邮件
-    await transporter.sendMail(mail, (err, info) => {
-        if (err) {
-            resultType = false
-            return console.log(err);
+    // 先判断用户是否存在
+    await User.findOne({ email }).then(async result => {
+        if (result) {
+            //发送邮件
+            await transporter.sendMail(mail, (err, info) => {
+                if (err) {
+                    resultType = false
+                    return console.log(err);
+                }
+            })
+        } else {
+            utils.responseClient(ctx, 400, "当前用户还未注册,请注册后在尝试登录");
         }
     })
     if (resultType) {
-        ctx.session.checkcode = code;
-        console.log(999,ctx.session)
+        ctx.session.checkcode = 1234;
+        console.log(999, ctx.session)
         utils.responseClient(ctx, 200, "验证码发送成功，请到邮箱查看！");
     } else {
         utils.responseClient(ctx, 200, "验证码发送失败");
     }
+    // let code = utils.createSixNum();
+    // let mail = {
+    //     from: "lmzs124083@163.com",
+    //     subject: "即将拥有八块腹肌のlm向你发送了一个爱心验证码",
+    //     to: email,
+    //     html: `
+    //     <H1>验证码</H1><a href="javascript:;">${code}</a>  请在5分钟内完成验证！`
+    // }
+    // let resultType = true;
+    //发送邮件
+    // await transporter.sendMail(mail, (err, info) => {
+    //     if (err) {
+    //         resultType = false
+    //         return console.log(err);
+    //     }
+    // })
+    // if (resultType) {
+    //     ctx.session.checkcode = 1234;
+    //     console.log(999,ctx.session)
+    //     utils.responseClient(ctx, 200, "验证码发送成功，请到邮箱查看！");
+    // } else {
+    //     utils.responseClient(ctx, 200, "验证码发送失败");
+    // }
+    // utils.responseClient(ctx, 200, "验证码发送成功，请到邮箱查看！");
 }
 module.exports = {
     sendEmail

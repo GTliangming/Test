@@ -112,8 +112,7 @@ const authorizeLogin = async (ctx, next) => {
 
 /* 前端登录 */
 const login = async (ctx, next) => {
-  console.log(222,ctx.session)
-  
+  console.log(222,ctx.session.checkcode)
   utils.responseClient(ctx, 200, '登录成功');
   // let { email, password, username, checkcode } = ctx.request.body;
   // console.log(1111, email, password, username, checkcode);
