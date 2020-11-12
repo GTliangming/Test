@@ -3,11 +3,17 @@
 // import qs from "qs"
 
 //  通用接口前缀
+import axios from "axios"
+const DEV_HOST = "http://localhost:3002/api/";
 
-export const DEV_HOST = "http://localhost:3002/api/";
+const PUB_HOST = "http://netbugs.cn:3002/api/";
 
-export const PUB_HOST = "http://netbugs.cn:3002/api/";
-
+export const HTTPServer = async (type, url, data) => {
+    console.log(11111, type, url, data);
+    axios.defaults.withCredentials = true;
+    const result = await axios.type(DEV_HOST + url, data)
+    return result;
+}
 
 // axios.defaults.baseURL = DEV_HOST;
 

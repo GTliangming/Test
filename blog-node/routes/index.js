@@ -20,6 +20,8 @@ const tags = require('./tag');
 router.get('/sendEmail',common.sendEmail)
 router.get('/testPage',common.testPage)
 router.get('/loginGithub',common.testGithub)
+router.get('/test',common.test)
+router.get('/gettest',common.gettest)
 
 /*  用户·········· */
 router.post('/login',user.login)

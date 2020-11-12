@@ -11,21 +11,24 @@ const Tags = require("../models/tag");
 
 
 /* 获取所有标签 */
-exports.getTagList = async (ctx,next) =>{
+const getTagList = async (ctx,next) =>{
 
 }
 
 /* 新增标签 */
-exports.addTags = async (ctx,next) =>{
+const addTags = async (ctx,next) =>{
 
 }
 
 /* 删除标签 */
-exports.delTags = async (ctx,next) =>{
+const delTags = async (ctx,next) =>{
 
 }
 
 /* 更新标签 */
-exports.updateTags = async (ctx,next) =>{
+const updateTags = async (ctx,next) =>{
 
+}
+module.exports = {
+    getTagList, addTags, delTags, updateTags
 }

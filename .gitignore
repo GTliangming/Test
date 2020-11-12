@@ -4,6 +4,8 @@
 admin/node_modules
 node/node_modules
 react-app/node_modules
+blog-node/node_modules
+demo/node_modules
 
 # roadhog-api-doc ignore
 admin/src/utils/request-temp.js

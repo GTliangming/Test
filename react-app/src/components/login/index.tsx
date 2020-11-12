@@ -40,8 +40,8 @@ export default class LoginAndRegisterBox extends React.Component<{}, LoginState>
                     closeIcon={<CloseCircleOutlined />}
                 >
                     <Tabs defaultActiveKey="1" centered>
-                        <TabPane tab="登录" key="1"><LoginBox/></TabPane>
-                        <TabPane tab="注册" key="2"><RegisterBox/></TabPane>
+                        <TabPane tab="登录" key="1"><LoginBox /></TabPane>
+                        <TabPane tab="注册" key="2"><RegisterBox /></TabPane>
                     </Tabs>
                 </Modal>
             </LoginContent>

@@ -1,25 +1,33 @@
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Form, Input, message } from "antd";
 import * as React from "react";
+import styled from "styled-components";
 import axios from "axios"
-import { DEV_HOST } from "../../../server"
 const layout = {
-    labelCol: { span: 6 },
+    labelCol: { span: 5 },
     wrapperCol: { span: 18 },
 };
 const tailLayout = {
     wrapperCol: { offset: 6, span: 18 },
 };
-interface LoginInfo {
-    name: any;
-    password: any;
-    email: any;
-    checkCode: any;
-}
+// interface LoginInfo {
+//     name: any;
+//     password: any;
+//     email: any;
+//     checkCode: any;
+// }
 interface LoginBoxState {
     isClick: boolean;
     countCode: number;
-    loginInfo: LoginInfo;
+    email: string;
+    btnLoding: boolean;
 }
+const BottomContent = styled.div`
+    display:flex;
+    justify-content:flex-end;
+    width:90%;
+    margin:0 auto;
+    margin-bottom:24px;
+`;
 export default class LoginBox extends React.Component<{}, LoginBoxState>{
     Timer: any;
 
@@ -28,35 +36,49 @@ export default class LoginBox extends React.Component<{}, LoginBoxState>{
         this.state = {
             isClick: false,
             countCode: 0,
-            loginInfo: {
-                name: "",
-                password: "",
-                email: "",
-                checkCode: "",
-            }
+            email: "",
+            btnLoding: false
         }
     }
-    onFinish = (value) => {
-        console.log(111, value)
+    async componentDidMount() {
+        // await axios.get(HOST + "test").then(result => {
+        //     console.log(222, result);
+
+        // })
     }
-    onValuesChange = (changedFields, allFields) => {
-        this.setState({
-            loginInfo: {
-                name: allFields.username ,
-                password: allFields.password ,
-                email: allFields.email ,
-                checkCode: allFields.checkcode 
-            }
+    onFinish = async (value) => {
+        // await axios.get(HOST + "gettest").then(result => {
+        //     console.log(222, result);
+
+        // })
+        this.setState({ btnLoding: true })
+        const username = value.username;
+        const password = value.password;
+        const email = value.password;
+        const checkcode = value.checkcode;
+        axios.defaults.withCredentials = true;
+        await axios.post("http://localhost:3002/api/login", { username, password, email, checkcode }).then(result => {
+            console.log(111, result)
+            this.setState({ btnLoding: false })
+        }).catch(err => {
+            message.error(err, 1)
         })
+        // await HTTPServer("POST", "login", { username, password, email, checkcode }).then(result => {
+        //     console.log(22222, result)
+        //     this.setState({ btnLoding: false })
+        // }).catch(err => {
+        //     message.error(err, 1)
+        // })
     }
     sendCheckCode = async () => {
-        const { email } = this.state.loginInfo;
+        const email = this.state.email;
         if (email && email !== "") {
-            await axios.get(DEV_HOST + "sendEmail?email=" + email).then(result => {
-                if (result.data.code === 200) {
-                    this.setState({ isClick: true, countCode: 5 })
-                    this.setInterval();
-                }
+            await axios.get( "http://localhost:3002/api/sendEmail?email=" + email).then(result => {
+                console.log(result);
+                // if (result.data.code === 200) {
+                //     this.setState({ isClick: true, countCode: 5 })
+                //     this.setInterval();
+                // }
             }).catch(err => {
                 message.error(err, 1)
             })
@@ -76,7 +98,8 @@ export default class LoginBox extends React.Component<{}, LoginBoxState>{
         }, 1000);
     }
     render() {
-        const { isClick, countCode } = this.state;
+
+        const { isClick, countCode, btnLoding } = this.state;
         return (
             <div >
                 <Form
@@ -84,30 +107,46 @@ export default class LoginBox extends React.Component<{}, LoginBoxState>{
                     name="basic"
                     initialValues={{ remember: true }}
                     onFinish={this.onFinish}
-                    onValuesChange={this.onValuesChange}
+
                 >
                     <Form.Item
                         label="用户名"
                         name="username"
-                        rules={[{ required: true, message: "Please input your username!" }]}
+                        rules={[
+                            { required: true, message: "请输入用户名!" },
+                            { pattern: /^[\u4e00-\u9fff\w]{2,10}$/, message: "用户名格式有误" }
+                        ]}
                     >
-                        <Input />
+                        <Input placeholder="2-10位(数字、字母、汉字)" />
                     </Form.Item>
 
                     <Form.Item
                         label="密码"
                         name="password"
-                        rules={[{ required: true, message: "Please input your password!" }]}
+                        rules={[
+                            { required: true, message: "请输入密码!" },
+                            { pattern: /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,10}$/, message: "密码格式有误" }
+                        ]}
                     >
-                        <Input.Password />
+                        <Input.Password placeholder="6-10位(字母+数字)" />
                     </Form.Item>
                     <Form.Item
                         label="邮箱"
                         name="email"
-                        rules={[{ required: true, message: "Please input your email!" }]}
+                        rules={[
+                            { required: true, message: "请输入邮箱账号!" },
+                            { pattern: /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/, message: "邮箱格式有误" }
+                        ]}
+                    >
+                        <Input onChange={(e) => { this.setState({ email: e.target.value }) }} />
+                    </Form.Item>
+                    <Form.Item
+                        label="验证码"
+                        name="checkcode"
+                        rules={[{ required: true, message: "请输入验证码!" }]}
                     >
                         <div style={{ display: "flex" }}>
-                            <Input style={{ width: "67" }} />
+                            <Input style={{ width: "67%" }} />
                             <Button
                                 disabled={isClick}
                                 style={{ width: "33%" }}
@@ -117,22 +156,12 @@ export default class LoginBox extends React.Component<{}, LoginBoxState>{
                             </Button>
                         </div>
                     </Form.Item>
-                    <Form.Item
-                        label="验证码"
-                        name="checkcode"
-                        rules={[{ required: true, message: "Please input your email!" }]}
-                    >
-                        <Input />
-                    </Form.Item>
-                    <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-                        <div>
-                            <Checkbox>Remember me</Checkbox>
-                            <a href="/#" style={{ marginLeft: "30px" }}>忘记密码/账号</a>
-                        </div>
-                    </Form.Item>
+                    <BottomContent>
+                        <a href="/#" style={{ marginLeft: "30px" }}>忘记用户名/密码</a>
+                    </BottomContent>
 
                     <Form.Item {...tailLayout} name="submit">
-                        <Button type="primary" htmlType="submit" style={{ width: "70%" }}>
+                        <Button type="primary" htmlType="submit" style={{ width: "70%" }} loading={btnLoding}>
                             登录
                         </Button>
                     </Form.Item>

@@ -7,6 +7,21 @@
 const path = require('path');
 const { argv } = require('yargs');
 
+// cookie设置
+
+exports.DEV_COOKIE = {
+	domain:"localhost",
+	path:"/",
+	maxAge:360000,
+	httpOnly:false,
+}
+exports.COOKIE = {
+	domain:"netbugs.cn",
+	path:"/",
+	maxAge:360000,
+	httpOnly:false,
+}
+
 // exports.APP = {
 // 	LIMIT: 10,
 // 	PORT: 8000,

@@ -67,7 +67,8 @@ const adminSchema = new mongoose.Schema({
       .update(argv.auth_default_password || 'root')
       .digest('hex'),
   },
-
+  // 验证码
+  checkcode: { type: String, default: "" },
   // 创建日期
   create_time: { type: Date, default: Date.now },
 
@@ -75,7 +76,6 @@ const adminSchema = new mongoose.Schema({
   update_time: { type: Date, default: Date.now },
 
 });
-
 // // 自增 ID 插件配置
 // adminSchema.plugin(autoIncrement.plugin, {
 //   model: 'User',
