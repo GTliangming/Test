@@ -70,8 +70,9 @@ exports.authorizeLogin = async (ctx, next) => {
         .then(async response => {
           if (response.id) {
             await User.findOne({ github_id: response.id })
-              .then(userInfo => {
-                // console.log('userInfo :', userInfo);
+              .then(async userInfo => {
+
+                console.log('userInfo :', userInfo);
                 if (userInfo) {
                   //登录成功后设置session
                   ctx.session.userInfo = userInfo;
@@ -88,9 +89,9 @@ exports.authorizeLogin = async (ctx, next) => {
                   };
                   //保存到数据库
                   let user = new User(obj);
-                  user.save().then(data => {
+                  await user.save().then(async data => {
                     ctx.session.userInfo = userInfo;
-                    utils.responseClient(ctx, 200, '授权登录成功', data);
+                    await utils.responseClient(ctx, 200, '授权登录成功', data);
                   });
                 }
               })
@@ -111,41 +112,41 @@ exports.authorizeLogin = async (ctx, next) => {
 
 /* 前端登录 */
 exports.login = async (ctx, next) => {
-  ctx.session.userInfo = "lm";
-  utils.responseClient(ctx, 200, '登录成功');
-  // let { email, password, username, checkcode } = ctx.request.body;
-  // console.log(1111, email, password, username, checkcode);
-  // if (!email && !username) {
-  //   utils.responseClient(ctx, 400, '用户名或邮箱不可为空');
-  //   return;
-  // }
-  // if (!password) {
-  //   utils.responseClient(ctx, 400, '密码不可为空');
-  //   return;
-  // }
-  // const code = ctx.cookies.keys;
-  // if (!checkcode || checkcode !== code) {
-  //   console.log(1111,code,checkcode)
-  //   utils.responseClient(ctx, 400, '验证码为空或输入有误！');
-  // }
-  // await User.find(
-  //   {
-  //     '$or': [
-  //       { email: email, password: utils.md5(password + utils.MD5_SUFFIX) },
-  //       { name: username, password: utils.md5(password + utils.MD5_SUFFIX) }]
-  //   })
-  //   .then(userInfo => {
-  //     if (userInfo) {
-  //       //登录成功后设置session
-  //       ctx.session.userInfo = userInfo;
-  //       utils.responseClient(ctx, 200, '登录成功', userInfo);
-  //     } else {
-  //       utils.responseClient(ctx, 400, '登录失败请重试');
-  //     }
-  //   })
-  //   .catch(err => {
-  //     utils.responseClient(ctx);
-  //   });
+  console.log(22222, ctx.session)
+  // ctx.session.userInfo = "lm";
+  // utils.responseClient(ctx, 200, '登录成功');
+  let { email, password, username, checkcode } = ctx.request.body;
+  if (!email && !username) {
+    utils.responseClient(ctx, 400, '用户名或邮箱不可为空');
+    return;
+  }
+  if (!password) {
+    utils.responseClient(ctx, 400, '密码不可为空');
+    return;
+  }
+  const code = ctx.cookies.keys;
+  if (!checkcode || checkcode !== code) {
+    console.log(1111, code, checkcode)
+    utils.responseClient(ctx, 400, '验证码为空或输入有误！');
+  }
+  await User.find(
+    {
+      '$or': [
+        { email: email, password: utils.md5(password + utils.MD5_SUFFIX) },
+        { name: username, password: utils.md5(password + utils.MD5_SUFFIX) }]
+    })
+    .then(userInfo => {
+      if (userInfo) {
+        //登录成功后设置session
+        ctx.session.userInfo = userInfo;
+        utils.responseClient(ctx, 200, '登录成功', userInfo);
+      } else {
+        utils.responseClient(ctx, 400, '登录失败请重试');
+      }
+    })
+    .catch(err => {
+      utils.responseClient(ctx);
+    });
 }
 /* 前端注册 */
 exports.register = async (ctx, next) => {
@@ -248,6 +249,7 @@ exports.loginAdmin = async (ctx, next) => {
 
 /* 管理后台端获取所有用户 */
 exports.getUserList = async (ctx, next) => {
+  console.log(22222, ctx.session)
   let keyword = ctx.request.query.keyword || '';
   let pageNum = parseInt(ctx.request.query.pageNum) || 1;
   let pageSize = parseInt(ctx.request.query.pageSize) || 10;

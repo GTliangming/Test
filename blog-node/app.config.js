@@ -75,7 +75,7 @@ exports.GITHUB = {
 
 	// 请把生产环境的 redirect_url，client_id 和 client_secret 中的 "****", 换成自己创建的 OAuth App 的具体参数即可。
 	// // 生产环境
-  redirect_url: 'http://www.netbugs.cn:3002/authorizeLogin',
+//   redirect_url: 'http://www.netbugs.cn:3002/authorizeLogin',
 //   client_id: '*****',
 // 	client_secret: '*****',
 

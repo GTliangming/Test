@@ -25,8 +25,19 @@ app.keys = session_signed_key;
 app.use(session(session_config,app))
 
 // 启动mongos连接数据库
-// const mongodb = require("./config/mongodb");
-// mongodb.connect();
+const mongodb = require("./config/mongodb");
+mongodb.connect();
+
+app.use(json())
+app.use(logger())
+app.use(require('koa-static')(__dirname + '/public'))
+
+app.use(views(__dirname + '/views', {
+  extension: 'ejs'
+}))
+
+
+
 
 // 跨域设置
 app.use(cors());
@@ -36,8 +47,6 @@ app.use(cors());
 const index = require("./routes/index");
 app.use(index.routes(), index.allowedMethods());
 
-
-
 // error handler
 onerror(app)
 
@@ -45,13 +54,7 @@ onerror(app)
 app.use(bodyparser({
   enableTypes:['json', 'form', 'text']
 }))
-app.use(json())
-app.use(logger())
-app.use(require('koa-static')(__dirname + '/public'))
 
-app.use(views(__dirname + '/views', {
-  extension: 'ejs'
-}))
 
 // logger
 app.use(async (ctx, next) => {
