@@ -62,3 +62,21 @@ const gettest = async (ctx, next) => {
 module.exports = {
     gettest,test,testGithub,testPage,sendEmail
 }
+
+
+// 手机号查询归属地
+// $.ajax({
+//     type: "get",
+//     url: 'https://api.jisuapi.com/shouji/query?appkey=06d97****fd0bb5&shouji='+this.tel,  //这个appkey自己申请就好
+//     dataType: "jsonp",
+//     jsonp: "callback",
+//     success: function(data) {
+//         console.log(data);
+//         this.province = data.result.province;
+//         this.city = data.result.city;
+//         let company = data.result.company;
+//         let bigPlace = this.province + this.city;
+//         $(".place-item").html(bigPlace)
+//         $(".topUp-company").html(company);
+//     }
+// });
