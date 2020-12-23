@@ -41,6 +41,7 @@ exports.authorizeLogin = async (ctx, next) => {
     client_secret: CONFIG.GITHUB.client_secret,
     code: code,
   };
+  // @ts-ignore
   await fetch(path, {
     method: 'POST',
     headers: {
@@ -59,6 +60,7 @@ exports.authorizeLogin = async (ctx, next) => {
     })
     .then(async token => {
       const url = "https://api.github.com/user";
+      // @ts-ignore
       await fetch(url, {
         headers: {
           accept: 'application/json',
@@ -71,7 +73,6 @@ exports.authorizeLogin = async (ctx, next) => {
           if (response.id) {
             await User.findOne({ github_id: response.id })
               .then(async userInfo => {
-
                 console.log('userInfo :', userInfo);
                 if (userInfo) {
                   //登录成功后设置session
@@ -90,7 +91,8 @@ exports.authorizeLogin = async (ctx, next) => {
                   //保存到数据库
                   let user = new User(obj);
                   await user.save().then(async data => {
-                    ctx.session.userInfo = userInfo;
+                    console.log(22222, data)
+                    ctx.session.userInfo = data;
                     await utils.responseClient(ctx, 200, '授权登录成功', data);
                   });
                 }
@@ -112,7 +114,6 @@ exports.authorizeLogin = async (ctx, next) => {
 
 /* 前端登录 */
 exports.login = async (ctx, next) => {
-  console.log(22222, ctx.session)
   // ctx.session.userInfo = "lm";
   // utils.responseClient(ctx, 200, '登录成功');
   let { email, password, username, checkcode } = ctx.request.body;
@@ -249,7 +250,6 @@ exports.loginAdmin = async (ctx, next) => {
 
 /* 管理后台端获取所有用户 */
 exports.getUserList = async (ctx, next) => {
-  console.log(22222, ctx.session)
   let keyword = ctx.request.query.keyword || '';
   let pageNum = parseInt(ctx.request.query.pageNum) || 1;
   let pageSize = parseInt(ctx.request.query.pageSize) || 10;
