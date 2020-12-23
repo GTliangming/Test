@@ -43,7 +43,7 @@ exports.COOKIE = {
 
 // 线上数据库
 exports.MONGODB = {
-    uri: `mongodb://123.56.31.193:${argv.dbport || '27017'}/BLOG`,
+    uri: `mongodb://lm:lmzs1111@123.56.31.193:${argv.dbport || '27017'}/BLOG?authSource=admin`,
     username: argv.db_username || 'lm',
     password: argv.db_password || 'lmzs1111',
 };
