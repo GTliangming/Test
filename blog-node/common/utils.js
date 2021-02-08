@@ -46,3 +46,6 @@ exports.CheckUserInfo = (name, email, password) => {
 
 	// }
 }
+
+
+exports.emallText = ``

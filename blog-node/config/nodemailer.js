@@ -12,6 +12,7 @@ const config = {
     auth: {
         user: 'lmzs124083@163.com', //注册的163邮箱账号
         pass: 'XPHVMFGAGWOXFMTH' //邮箱的授权码，不是注册时的密码,等你开启的stmp服务自然就会知道了
+        //  qq 邮箱smtp   sbsezanbynqmfjhc   fnfbqdjqheasgjhi rgoljegjhszjgcjg
     }
 };
 

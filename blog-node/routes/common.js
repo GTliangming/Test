@@ -18,25 +18,24 @@ const sendEmail = async (ctx, next) => {
         utils.responseClient(ctx, 400, '邮箱不可为空')
         return;
     }
-    let code = utils.createSixNum();
+    // let code = utils.createSixNum();
     let mail = {
         from: "lmzs124083@163.com",
-        subject: "即将拥有八块腹肌のlm向你发送了一个爱心验证码",
+        subject: "测试",
         to: email,
-        html: `
-        <H1>验证码</H1><a href="javascript:;">${code}</a>  请在5分钟内完成验证！`
+        html: utils.emallText
     }
-    await User.findOne({ email }).then(result => {
-        console.log(22222, result);
-        utils.responseClient(ctx, 200, "success", result)
-    })
-    // await nodemailer.sendMail(mail).then( async result => {
-
-    //     console.log(3333, ctx.session)
-    //     utils.responseClient(ctx, 200, '验证码发送成功,请到邮箱查看！')
-    // }).catch(err => {
-    //     utils.responseClient(ctx, 400, '验证码发送失败,请重试！')
+    // await User.findOne({ email }).then(result => {
+    //     console.log(22222, result);
+    //     utils.responseClient(ctx, 200, "success", result)
     // })
+    await nodemailer.sendMail(mail).then(async result => {
+
+        console.log(3333, ctx.session)
+        utils.responseClient(ctx, 200, '验证码发送成功,请到邮箱查看！')
+    }).catch(err => {
+        utils.responseClient(ctx, 400, '验证码发送失败,请重试！')
+    })
 }
 
 /* 接口测试页面    (用postman测试更佳) */
@@ -56,11 +55,43 @@ const test = async (ctx, next) => {
 }
 const gettest = async (ctx, next) => {
     const session = ctx.session
-    console.log(444,ctx.session)
+    console.log(444, ctx.session)
     utils.responseClient(ctx, 200, "success", session)
 }
+
+
+/* 舔狗日记 */
+const diary = async (ctx, next) => {
+    await fetch('http://api.tianapi.com/txapi/tiangou/index?key=c854802ac330abef23a003bc699e8f0f')
+        .then(res => res.json())
+        .then((json) => {
+            console.log(1111, json)
+            if (json.code === 200) {
+                utils.responseClient(ctx, 200, json.newslist)
+            }
+        }).catch(err => {
+            console.log(err);
+            utils.responseClient(ctx, 400, "今日份的舔狗日记已经结束喽！")
+        })
+}
+
+/* 神回复 */
+
+const reply = async (ctx, next) => {
+    await fetch('http://api.tianapi.com/txapi/godreply/index?key=c854802ac330abef23a003bc699e8f0f')
+        .then(res => res.json())
+        .then((json) => {
+            console.log(1111, json)
+            if (json.code === 200) {
+                utils.responseClient(ctx, 200, json.newslist)
+            }
+        }).catch(err => {
+            console.log(err);
+            utils.responseClient(ctx, 400, "今日份的神回复已经结束喽！")
+        })
+}
 module.exports = {
-    gettest,test,testGithub,testPage,sendEmail
+    gettest, test, testGithub, testPage, sendEmail, diary, reply
 }
 
 

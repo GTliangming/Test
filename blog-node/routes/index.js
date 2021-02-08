@@ -22,6 +22,8 @@ router.get('/testPage',common.testPage)
 router.get('/loginGithub',common.testGithub)
 router.get('/test',common.test)
 router.get('/gettest',common.gettest)
+router.get('/diary',common.diary)
+router.get('/reply',common.reply)
 
 /*  用户·········· */
 router.post('/login',user.login)
