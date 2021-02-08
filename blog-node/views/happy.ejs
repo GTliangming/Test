@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>有趣的接口 哈哈</title>
+  <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.20.1/moment.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.0.2/antd.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/3.0.2/antd.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+</head>
+
+<body>
+  <div id="app"></div>
+  <script type="text/babel">
+    class TianGou extends React.Component {
+      state = {
+        Host: `${document.location.protocol}//${window.location.host}/api/`,
+        responData: ""
+      }
+      ReqFun() {
+        const { Host } = this.state;
+        const val = "diary";
+        axios.get(Host + val)
+          .then(result => {
+            console.log(11111,result.data)
+            this.setState({
+              responData:result.data.message[0]
+            })
+          })
+      }
+      render = () => {
+        const { responData } = this.state;
+        return (
+          <div>
+            <antd.Button
+              style={{ marginLeft: "3px" }}
+              type="primary"
+              onClick={() => this.ReqFun()}
+            >
+              点击请求获取最新舔狗日记
+            </antd.Button>
+            <div style={{ marginTop: "20px" }}>
+              <h2>{responData.content}</h2>
+            </div>
+          </div>
+        )
+      }
+    }
+    class TestBox extends React.Component {
+      render = () => {
+        return (
+          <div>
+            <TianGou />
+          </div>
+        )
+      }
+    }
+    ReactDOM.render(<TestBox />,
+      document.getElementById('app'),
+    )
+  </script>
+</body>
+
+</html>

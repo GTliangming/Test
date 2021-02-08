@@ -58,6 +58,11 @@ const gettest = async (ctx, next) => {
     console.log(444, ctx.session)
     utils.responseClient(ctx, 200, "success", session)
 }
+/* 娱乐页面 */
+const happy = async (ctx, next) => {
+    console.log(1)
+    await ctx.render("happy")
+}
 
 
 /* 舔狗日记 */
@@ -91,7 +96,7 @@ const reply = async (ctx, next) => {
         })
 }
 module.exports = {
-    gettest, test, testGithub, testPage, sendEmail, diary, reply
+    gettest, test, testGithub, testPage, sendEmail, diary, reply,happy
 }
 
 
