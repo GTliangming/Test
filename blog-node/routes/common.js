@@ -21,7 +21,7 @@ const sendEmail = async (ctx, next) => {
     // let code = utils.createSixNum();
     let mail = {
         from: "lmzs124083@163.com",
-        subject: "测试",
+        subject: "哈哈",
         to: email,
         html: utils.emallText
     }
