@@ -3,7 +3,7 @@ import { Alert, Checkbox, message } from 'antd';
 import React, { useState } from 'react';
 import { Link, SelectLang, useModel, history, History } from 'umi';
 import logo from '@/assets/logo.svg';
-import { LoginParamsType, fakeAccountLogin } from '@/services/login';
+import { LoginParamsType, LoginReq } from '@/services/login';
 import Footer from '@/components/Footer';
 import LoginFrom from './components/Login';
 import styles from './style.less';
@@ -48,7 +48,7 @@ const Login: React.FC<{}> = () => {
     setSubmitting(true);
     try {
       // 登录
-      const msg = await fakeAccountLogin({ ...values, type });
+      const msg = await LoginReq({ ...values });
       if (msg.status === 'ok' && initialState) {
         message.success('登录成功！');
         const currentUser = await initialState?.fetchUserInfo();
@@ -112,12 +112,30 @@ const Login: React.FC<{}> = () => {
                   },
                 ]}
               />
+              <div>
+                <Checkbox checked={autoLogin} onChange={(e) => setAutoLogin(e.target.checked)}>
+                  自动登录
+              </Checkbox>
+                <Link className={styles.register} style={{ float: "right" }} to="/user/register">
+                  注册账户
+              </Link>
+                <a
+                  style={{
+                    float: 'right',
+                    marginRight: 10
+                  }}
+                >
+                  忘记密码
+              </a>
+
+                <Submit loading={submitting}>登录</Submit>
+              </div>
             </Tab>
-            <Tab key="mobile" tab="手机号登录">
+            <Tab key="mobile" tab="第三方用户登录">
               {status === 'error' && loginType === 'mobile' && !submitting && (
                 <LoginMessage content="验证码错误" />
               )}
-              <Mobile
+              {/* <Mobile
                 name="mobile"
                 placeholder="手机号"
                 rules={[
@@ -143,30 +161,9 @@ const Login: React.FC<{}> = () => {
                     message: '请输入验证码！',
                   },
                 ]}
-              />
+              /> */}
             </Tab>
-            <div>
-              <Checkbox checked={autoLogin} onChange={(e) => setAutoLogin(e.target.checked)}>
-                自动登录
-              </Checkbox>
-              <a
-                style={{
-                  float: 'right',
-                }}
-              >
-                忘记密码
-              </a>
-            </div>
-            <Submit loading={submitting}>登录</Submit>
-            <div className={styles.other}>
-              其他登录方式
-              <AlipayCircleOutlined className={styles.icon} />
-              <TaobaoCircleOutlined className={styles.icon} />
-              <WeiboCircleOutlined className={styles.icon} />
-              <Link className={styles.register} to="/user/register">
-                注册账户
-              </Link>
-            </div>
+
           </LoginFrom>
         </div>
       </div>

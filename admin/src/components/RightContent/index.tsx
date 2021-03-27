@@ -31,8 +31,7 @@ const GlobalHeaderRight: React.FC<{}> = () => {
     <Space className={className}>
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
-        placeholder="站内搜索"
-        defaultValue="umi ui"
+        placeholder="请输入搜索内容！"
         options={[
           { label: <a href="https://umijs.org/zh/guide/umi-ui.html">umi ui</a>, value: 'umi ui' },
           {
@@ -52,7 +51,7 @@ const GlobalHeaderRight: React.FC<{}> = () => {
         //   console.log('input', value);
         // }}
       />
-      <Tooltip title="使用文档">
+      {/* <Tooltip title="使用文档">
         <span
           className={styles.action}
           onClick={() => {
@@ -61,7 +60,7 @@ const GlobalHeaderRight: React.FC<{}> = () => {
         >
           <QuestionCircleOutlined />
         </span>
-      </Tooltip>
+      </Tooltip> */}
       <Avatar />
       {REACT_APP_ENV && (
         <span>

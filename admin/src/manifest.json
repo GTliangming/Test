@@ -1,10 +1,10 @@
 {
-  "name": "Ant Design Pro",
+  "name": "荒烟依旧平楚~",
   "short_name": "Ant Design Pro",
   "display": "standalone",
   "start_url": "./?utm_source=homescreen",
   "theme_color": "#002140",
-  "background_color": "#001529",
+  "background_color": "#333",
   "icons": [
     {
       "src": "icons/icon-192x192.png",
