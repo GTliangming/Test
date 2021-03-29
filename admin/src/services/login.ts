@@ -1,16 +1,16 @@
-import { request } from 'umi';
-import { Webapi } from './webapi';
+// import { request } from 'umi';
+// import { BASE_URL, TIMEOUT } from './utils';
 
 // export interface LoginParamsType {
-//   username: string;
-//   password: string;
-//   mobile: string;
-//   captcha: string;
-//   type: string;
+//   username?: string;
+//   password?: string;
+//   mobile?: string;
+//   captcha?: string;
+//   type?: string;
 // }
 
 // export async function fakeAccountLogin(params: LoginParamsType) {
-//   return request<API.LoginStateType>('/api/login/account', {
+//   return request<API.LoginStateType>(BASE_URL+'/loginAdmin', {
 //     method: 'POST',
 //     data: params,
 //   });
@@ -24,6 +24,8 @@ import { Webapi } from './webapi';
 //   return request('/api/login/outLogin');
 // }
 
+
+import HTTP from "./webapi"
 /*  定义请求 */
 
 // 登录
@@ -33,7 +35,7 @@ export interface LoginParamsType {
   password: string;
   checkcode?: string;
 }
-export async function LoginReq(params: LoginParamsType) {
+export async function AccountLogin(params: LoginParamsType) {
   console.log(22222,params)
-  return Webapi("/login", params)
+  return HTTP.post("/loginAdmin", params)
 }

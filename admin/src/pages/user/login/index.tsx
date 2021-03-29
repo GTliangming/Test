@@ -3,7 +3,7 @@ import { Alert, Checkbox, message } from 'antd';
 import React, { useState } from 'react';
 import { Link, SelectLang, useModel, history, History } from 'umi';
 import logo from '@/assets/logo.svg';
-import { LoginParamsType, LoginReq } from '@/services/login';
+import { AccountLogin, LoginParamsType } from '@/services/login';
 import Footer from '@/components/Footer';
 import LoginFrom from './components/Login';
 import styles from './style.less';
@@ -48,19 +48,23 @@ const Login: React.FC<{}> = () => {
     setSubmitting(true);
     try {
       // 登录
-      const msg = await LoginReq({ ...values });
-      if (msg.status === 'ok' && initialState) {
+      const result = await AccountLogin({ ...values });
+      const { code, msg } = result.data
+      if (code === 200 && initialState) {
         message.success('登录成功！');
-        const currentUser = await initialState?.fetchUserInfo();
-        setInitialState({
-          ...initialState,
-          currentUser,
-        });
+        // const currentUser = await initialState?.fetchUserInfo();
+        // setInitialState({
+        //   ...initialState,
+        //   currentUser,
+        // });
         replaceGoto();
         return;
+      } else {
+        // 如果失败去设置用户错误信息
+        setUserLoginState(msg);
+        message.error(msg);
       }
-      // 如果失败去设置用户错误信息
-      setUserLoginState(msg);
+
     } catch (error) {
       message.error('登录失败，请重试！');
     }

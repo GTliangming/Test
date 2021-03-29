@@ -2,10 +2,7 @@ import React from "react";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import routers from "./router/index.js";
 import ContentBoxs from "./views/ContentBoxs";
-
-
-
-export default class App extends React.Component<{}, {}> {
+export default class AppBox extends React.Component<{}, {}> {
 
     render() {
         return (

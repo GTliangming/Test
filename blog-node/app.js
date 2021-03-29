@@ -41,7 +41,11 @@ app.use(views(__dirname + '/views', {
 
 // 跨域设置
 app.use(cors());
-
+// middlewares
+// 要放在路由前
+app.use(bodyparser({
+  enableTypes:['json', 'form', 'text']
+}))
 
 //路由设置
 const index = require("./routes/index");
@@ -50,10 +54,7 @@ app.use(index.routes(), index.allowedMethods());
 // error handler
 onerror(app)
 
-// middlewares
-app.use(bodyparser({
-  enableTypes:['json', 'form', 'text']
-}))
+
 
 
 // logger

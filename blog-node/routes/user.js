@@ -218,17 +218,18 @@ exports.logout = async (ctx, next) => {
 
 /* 管理后台端登录 */
 exports.loginAdmin = async (ctx, next) => {
-  let { name, password } = ctx.request.body;
-  if (!name) {
+  let { username, password } = ctx.request.body;
+  console.log(22222, ctx.request.body)
+  if (!ctx.request.body.username) {
     utils.responseClient(ctx, 400, 2, '用户名不可为空');
     return;
   }
-  if (!password) {
+  if (!ctx.request.body.password) {
     utils.responseClient(ctx, 400, 2, '密码不可为空');
     return;
   }
   let userType = 0;
-  await User.findOne({ name: name, password: utils.md5(password + utils.MD5_SUFFIX), })
+  await User.findOne({ name: username, password: utils.md5(password + utils.MD5_SUFFIX), })
     .then(data => {
       if (data) {
         userType = data.type;
