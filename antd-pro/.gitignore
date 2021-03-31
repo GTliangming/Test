@@ -1,20 +1,14 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-admin/node_modules
-node/node_modules
-react-app/node_modules
-blog-node/node_modules
-demo/node_modules
-antd-pro/node_modules
-
+**/node_modules
 # roadhog-api-doc ignore
-admin/src/utils/request-temp.js
+/src/utils/request-temp.js
 _roadhog-api-doc
 
 # production
-admin/dist
-admin/.vscode
+/dist
+/.vscode
 
 # misc
 .DS_Store

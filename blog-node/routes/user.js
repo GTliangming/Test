@@ -152,6 +152,7 @@ exports.login = async (ctx, next) => {
 /* 前端注册 */
 exports.register = async (ctx, next) => {
   let { name, password, phone, email, introduce, type, checkcode } = ctx.request.body;
+  console.log(11111,ctx.request.body)
   if (!email) {
     utils.responseClient(ctx, 400, '用户邮箱不可为空');
     return;
@@ -232,7 +233,8 @@ exports.loginAdmin = async (ctx, next) => {
   await User.findOne({ name: username, password: utils.md5(password + utils.MD5_SUFFIX), })
     .then(data => {
       if (data) {
-        userType = data.type;
+        userType = data.adminType;
+        console.log("datatype",data.type)
         if (userType === 999 || userType === 99) {
           //登录成功后设置session
           ctx.session.userInfo = data;
