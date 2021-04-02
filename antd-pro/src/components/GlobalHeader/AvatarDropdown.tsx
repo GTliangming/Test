@@ -24,7 +24,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
 
     if (key === 'logout') {
       const { dispatch } = this.props;
-
+      window.localStorage.removeItem('username')
       if (dispatch) {
         dispatch({
           type: 'login/logout',
@@ -38,13 +38,15 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
   };
 
   render(): React.ReactNode {
-    const {
+    let {
       currentUser = {
         avatar: '',
-        name: '',
+        name: ''
       },
       menu,
     } = this.props;
+    const username = window.localStorage.getItem('username')
+
     const menuHeaderDropdown = (
       <Menu className={styles.menu} selectedKeys={[]} onClick={this.onMenuClick}>
         {menu && (
@@ -71,7 +73,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
       <HeaderDropdown overlay={menuHeaderDropdown}>
         <span className={`${styles.action} ${styles.account}`}>
           <Avatar size="small" className={styles.avatar} src={currentUser.avatar} alt="avatar" />
-          <span className={`${styles.name} anticon`}>{currentUser.name}</span>
+          <span className={`${styles.name} anticon`}>{username}</span>
         </span>
       </HeaderDropdown>
     ) : (

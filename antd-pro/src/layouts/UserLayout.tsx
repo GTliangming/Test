@@ -7,7 +7,6 @@ import React from 'react';
 import type { ConnectState } from '@/models/connect';
 import logo from '../assets/logo.svg';
 import styles from './UserLayout.less';
-
 export type UserLayoutProps = {
   breadcrumbNameMap: Record<string, MenuDataItem>;
 } & Partial<ConnectProps>;

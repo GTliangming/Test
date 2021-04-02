@@ -9,7 +9,7 @@ export type LoginParamsType = {
 };
 
 export async function fakeAccountLogin(params: LoginParamsType) {
-  return request(BASE_URL+'/loginAdmin', {
+  return request(BASE_URL + '/loginAdmin', {
     method: 'POST',
     data: params,
   });
@@ -28,6 +28,16 @@ export interface AccountLoginParamsType {
   checkcode?: string;
 }
 export async function AccountLogin(params: AccountLoginParamsType) {
-  console.log(22222,params)
   return HTTP.post("/loginAdmin", params)
+}
+export async function getCaptcha() {
+
+}
+export interface ForgetPasswordParamsType {
+  username: string;
+  email: string;
+  newPassword: string;
+}
+export async function AccountForgetPassword(params: ForgetPasswordParamsType) {
+  return HTTP.post("/updatePassword", params)
 }

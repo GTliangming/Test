@@ -73,7 +73,6 @@ exports.authorizeLogin = async (ctx, next) => {
           if (response.id) {
             await User.findOne({ github_id: response.id })
               .then(async userInfo => {
-                console.log('userInfo :', userInfo);
                 if (userInfo) {
                   //登录成功后设置session
                   ctx.session.userInfo = userInfo;
@@ -91,7 +90,6 @@ exports.authorizeLogin = async (ctx, next) => {
                   //保存到数据库
                   let user = new User(obj);
                   await user.save().then(async data => {
-                    console.log(22222, data)
                     ctx.session.userInfo = data;
                     await utils.responseClient(ctx, 200, '授权登录成功', data);
                   });
@@ -127,14 +125,13 @@ exports.login = async (ctx, next) => {
   }
   const code = ctx.cookies.keys;
   if (!checkcode || checkcode !== code) {
-    console.log(1111, code, checkcode)
     utils.responseClient(ctx, 400, '验证码为空或输入有误！');
   }
   await User.find(
     {
       '$or': [
-        { email: email, password: utils.md5(password + utils.MD5_SUFFIX) },
-        { name: username, password: utils.md5(password + utils.MD5_SUFFIX) }]
+        { email: email, password },
+        { name: username, password }]
     })
     .then(userInfo => {
       if (userInfo) {
@@ -152,7 +149,7 @@ exports.login = async (ctx, next) => {
 /* 前端注册 */
 exports.register = async (ctx, next) => {
   let { name, password, phone, email, introduce, type, checkcode } = ctx.request.body;
-  console.log(11111,ctx.request.body)
+  console.log(11111, ctx.request.body)
   if (!email) {
     utils.responseClient(ctx, 400, '用户邮箱不可为空');
     return;
@@ -192,10 +189,11 @@ exports.register = async (ctx, next) => {
     let user = new User({
       email,
       name,
-      password: utils.md5(password + utils.MD5_SUFFIX),
+      password,
       phone,
       type,
       introduce,
+      adminType: 9
     });
     await user.save().then(data => {
       //注册成功后设置session
@@ -220,25 +218,16 @@ exports.logout = async (ctx, next) => {
 /* 管理后台端登录 */
 exports.loginAdmin = async (ctx, next) => {
   let { username, password } = ctx.request.body;
-  console.log(22222, ctx.request.body)
-  if (!ctx.request.body.username) {
-    utils.responseClient(ctx, 400, 2, '用户名不可为空');
-    return;
-  }
-  if (!ctx.request.body.password) {
-    utils.responseClient(ctx, 400, 2, '密码不可为空');
-    return;
-  }
   let userType = 0;
-  await User.findOne({ name: username, password: utils.md5(password + utils.MD5_SUFFIX), })
-    .then(data => {
-      if (data) {
-        userType = data.adminType;
-        console.log("datatype",data.type)
+  await User.findOne({ name: username, password: password })
+    .then(userInfo => {
+      if (userInfo) {
+        userType = userInfo.adminType;
+        console.log("datatype", userInfo.type)
         if (userType === 999 || userType === 99) {
           //登录成功后设置session
-          ctx.session.userInfo = data;
-          utils.responseClient(ctx, 200, '后台管理平台登录成功', data);
+          ctx.session.userInfo = userInfo;
+          utils.responseClient(ctx, 200, '后台管理平台登录成功', { username: userInfo.name });
         } else {
           utils.responseClient(ctx, 400, '您没有登录权限！');
         }
@@ -307,7 +296,7 @@ exports.deleteOneUser = async (ctx, next) => {
     if (result.n === 1) {
       utils.responseClient(ctx, 200, '用户删除成功!');
     } else {
-      utils.responseClient(ctx, 400, '用户不存在');
+      utils.responseClient(ctx, 400, '该用户不存在');
     }
   }).catch(err => {
     utils.responseClient(ctx);
@@ -325,11 +314,29 @@ exports.getUserInfo = async (ctx, next) => {
 }
 /* 用户修改密码 */
 exports.updatePassword = async (ctx, next) => {
-  // let { name, email, checkcode, newPassword } = ctx.request.body;
-  // // 前端判非空
-  // const code = ctx.session.checkcode;
-  // if (!checkcode || checkcode !== code) {
-  //   utils.responseClient(ctx, 400, '验证码为空或输入有误！');
-  // }
-
+  let { username, email, newPassword } = ctx.request.body;
+  await User.findOne({ name: username, email: email })
+    .then(async userInfo => {
+      if (userInfo) {
+        const { adminType } = userInfo;
+        if (adminType === 999) {
+          utils.responseClient(ctx, 400, '你没有修改权限');
+        } else {
+          await User.update({ name: username, email: email }, { $set: { password: newPassword } })
+            .then(res => {
+              ctx.session.userInfo = userInfo;
+              //登录成功后设置session
+              utils.responseClient(ctx, 200, '密码修改成功', { username: userInfo.name });
+              console.log(res)
+            }).catch(err => {
+              utils.responseClient(ctx, 400, '更改失败，请重试');
+            })
+        }
+      } else {
+        utils.responseClient(ctx, 400, '该用户不存在');
+      }
+    })
+    .catch(err => {
+      utils.responseClient(ctx);
+    });
 }

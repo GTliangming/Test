@@ -16,7 +16,7 @@ declare module '@antv/data-set';
 declare module 'mockjs';
 declare module 'react-fittext';
 declare module 'bizcharts-plugin-slider';
-
+declare const TencentCaptcha: any;
 // google analytics interface
 type GAFieldsObject = {
   eventCategory: string;

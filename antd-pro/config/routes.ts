@@ -12,6 +12,11 @@
             path: '/user/login',
             component: './User/login',
           },
+          {
+            name: 'forgetpassword',
+            path: '/user/forgetpassword',
+            component: './User/ForgetPassword',
+          }
         ],
       },
       {
